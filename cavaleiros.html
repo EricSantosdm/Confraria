@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confraria da Cavalaria Cearense</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-green: #0a2e1a;
+            --medium-green: #1a4d2e;
+            --light-green: #4a7856;
+            --accent-green: #7aba7a;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(68, 68, 68, 0.9)), 
+                        url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Bandeira_Templ%C3%A1ria.svg/1920px-Bandeira_Templ%C3%A1ria.svg.png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .navbar {
+            background-color: var(--dark-green) !important;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-brand .logo-img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .navbar-brand .logo-text {
+            display: inline;
+        }
+        
+        @media (max-width: 991.98px) {
+            .navbar-brand .logo-text {
+                display: none;
+            }
+            .navbar-brand .logo-img {
+                margin-right: 0;
+            }
+        }
+        
+        .nav-link {
+            color: #f8f9fa !important;
+        }
+        
+        .nav-link:hover {
+            color: var(--accent-green) !important;
+        }
+        
+        .card {
+            background-color: var(--medium-green);
+            border: none;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+        
+        .card-img-top {
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-img-top {
+            transform: scale(1.1);
+        }
+        
+        .card-body {
+            padding: 1.25rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-title {
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        
+        .card:hover .card-title {
+            color: var(--accent-green);
+        }
+        
+        .section-title {
+            color: var(--accent-green);
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-green);
+            display: inline-block;
+        }
+        
+        footer {
+            background-color: var(--dark-green);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .modal-content {
+            background-color: var(--medium-green);
+        }
+        
+        .btn-primary {
+            background-color: var(--light-green);
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark-green);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--light-green);
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-green);
+        }
+        
+        /* Seção Nobre Rito */
+        .nobre-rito-section {
+            background-color: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nobre-rito-card {
+            background-color: transparent;
+            color: white;
+            transition: all 0.4s ease;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10%;
+        }
+        
+        .nobre-rito-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(122, 186, 122, 0.1) 0%, rgba(10, 46, 26, 0.2) 100%);
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nobre-rito-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .nobre-rito-card:hover::before {
+            opacity: 1;
+        }
+        
+        .nobre-rito-card:hover .nobre-rito-img {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+        
+        .nobre-rito-img {
+            height: 200px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .nobre-rito-title {
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .nobre-rito-card:hover .nobre-rito-title {
+            color: var(--accent-green);
+            transform: scale(1.05);
+        }
+        
+        /* Efeito de brilho nos cards */
+        .card::after, .nobre-rito-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .card:hover::after, .nobre-rito-card:hover::after {
+            left: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="Logo" class="logo-img">
+                <span class="logo-text">Confraria da Cavalaria Cearense</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#videos">Vídeos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#documentos">Documentos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#priorados">Priorados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#nobre-rito">Nobre Rito</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            
+            <img src="logo.png" alt="Logo" class="logo-img mt-4" height="200vh">
+            <h1 class="display-3 fw-bold mb-4">Confraria da Cavalaria Cearense</h1>
+           
+   
+            <p class="lead mb-5">Prezando pela excelencia da Cavalaria Cearense</p>
+            <a href="#videos" class="btn btn-primary btn-lg px-4 me-2">
+                <i class="fas fa-play me-2"></i>Assistir Vídeos
+            </a>
+            <a href="#documentos" class="btn btn-outline-light btn-lg px-4">
+                <i class="fas fa-file-alt me-2"></i>Documentos
+            </a>
+        </div>
+    </section>
+
+    <!-- Vídeos Section -->
+    <section id="videos" class="py-5">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-video me-2"></i>Nossos Vídeos
+            </h2>
+            
+            <div class="row">
+                <!-- Vídeo 1 - Elemento comentado para adição de novos vídeos -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="card h-100" data-bs-toggle="modal" data-bs-target="#videoModal" data-video-id="T6_z8hIXfZc">
+                        <img src="https://i.ytimg.com/vi/T6_z8hIXfZc/hqdefault.jpg?sqp=-oaymwEmCKgBEF5IWvKriqkDGQgBFQAAiEIYAdgBAeIBCggYEAIYBjgBQAE=&rs=AOn4CLCq2TTs4bqXEUByvlWDnt5RLGDrNw" class="card-img-top" alt="Cavalgada na Serra">
+                        <div class="card-body">
+                            <h5 class="card-title">Entrevista Cavaleiros pela Demanda (IRCB)</h5>
+                             <p class="card-text text-light ">Entrevista realizada com os Irmãos Marcelo Brito, Éder Mancini e Karlos Messa, alguns dos principais responsáveis pela instauração do Ilustre Rito da Cavalaria o Brasil (IRCB).</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Vídeo 2 -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="card h-100" data-bs-toggle="modal" data-bs-target="#videoModal" data-video-id="jA4aF2ncfCo">
+                        <img src="https://i.ytimg.com/vi/jA4aF2ncfCo/hqdefault.jpg?sqp=-oaymwEmCKgBEF5IWvKriqkDGQgBFQAAiEIYAdgBAeIBCggYEAIYBjgBQAE=&rs=AOn4CLC11-bnaGsvLcOWscNhFL06klGZLQ" class="card-img-top" alt="Workshop de Equitação">
+                        <div class="card-body">
+                            <h5 class="card-title">Entrevista Cavaleiros pela Demanda (Sublimes Ordens)</h5>
+                             <p class="card-text text-light ">Entrevista realizada com os Irmãos Rafael Soneghet e Rodrigo Arisa, responsáveis pela instauração das Sublimes Ordens.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <!-- 
+                    COMO ADICIONAR NOVOS VÍDEOS:
+                    1. Copie este bloco completo
+                    2. Cole após o último item de vídeo
+                    3. Altere:
+                       - data-video-id (ID do vídeo do YouTube)
+                       - src da imagem (usar o mesmo ID)
+                       - Título e descrição
+                -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentos Section -->
+    <section id="documentos" class="py-5 bg-dark">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-file-alt me-2"></i>Documentos Importantes
+            </h2>
+            
+            <div class="row">
+                <!-- Documento 1 - Elemento comentado para adição de novos documentos -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-file-pdf text-danger me-2"></i>Arquivo de Exemplo
+                            </h5>
+                             <p class="card-text text-light ">Documento oficial com as regras e diretrizes da Confraria da Cavalaria Cearense.</p>
+                            <a href="#" class="btn btn-sm btn-primary">
+                                <i class="fas fa-download me-2"></i>Baixar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            
+                
+                <!-- 
+                    COMO ADICIONAR NOVOS DOCUMENTOS:
+                    1. Copie este bloco completo
+                    2. Cole após o último item de documento
+                    3. Altere:
+                       - Ícone (pdf, word, excel, etc)
+                       - Título e descrição
+                       - Link do download (href="#")
+                -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Priorados Section -->
+    <section id="priorados" class="py-5">
+        <div class="container">
+            <h2 class="section-title mb-5">
+                <i class="fas fa-chess-knight me-2"></i>Nossos Priorados
+            </h2>
+            
+            <div class="row">
+                <!-- Priorado 1 - Elemento comentado para adição de novos priorados -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_cavaleiro.png" class="nobre-rito-img mb-3" alt="Grão-Mestre">
+                        <h3 class="nobre-rito-title">Priorado Cavaleiro do Sertão Caririense 192</h3>
+                        <p>3ª Região</p>
+                        
+                    </div>
+                </div>
+                
+                
+                
+                <!-- 
+                    COMO ADICIONAR NOVOS PRIORADOS:
+                    1. Copie este bloco completo
+                    2. Cole após o último item de priorado
+                    3. Altere:
+                       - src da imagem
+                       - Título e descrição
+                       - Texto alternativo da imagem
+                -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Nobre Rito Section -->
+    <section id="nobre-rito" class="py-5 nobre-rito-section">
+        <div class="container">
+            <h2 class="section-title mb-5">
+                <i class="fas fa-crown me-2"></i>Nobre Rito
+            </h2>
+            
+            <div class="row">
+                <!-- Membro 1 - Elemento comentado para adição de novos membros -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_cavaleiro.png" class="nobre-rito-img mb-3" alt="Grão-Mestre">
+                        <h3 class="nobre-rito-title">Nobre Cavaleiro</h3>
+                      
+                    </div>
+                </div>
+                
+                <!-- Membro 1 - Elemento comentado para adição de novos membros -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_capela.png" class="nobre-rito-img mb-3" alt="Grão-Mestre">
+                        <h3 class="nobre-rito-title">Cavaleiro da Capela</h3>
+                        
+                    </div>
+                </div>
+                
+                <!-- Membro 2 -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_salem.png" class="nobre-rito-img mb-3" alt="Cavaleiro Chefe">
+                        <h3 class="nobre-rito-title">Cavaleiro da Cruz de Salém</h3>
+                       
+                    </div>
+                </div>
+                
+                <!-- Membro 3 -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_extemplario.png" class="nobre-rito-img mb-3" alt="Mestre de Cerimônias">
+                        <h3 class="nobre-rito-title">Cavaleiro Ex-Templário</h3>
+                        
+                    </div>
+                </div>
+                
+                <!-- Membro 4 -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_triade.png" class="nobre-rito-img mb-3" alt="Tesoureira">
+                        <h3 class="nobre-rito-title">Cavaleiro da Triade</h3>
+                       
+                    </div>
+                </div>
+                
+                <!-- Membro 4 -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_ebano.png" class="nobre-rito-img mb-3" alt="Tesoureira">
+                        <h3 class="nobre-rito-title">Cavaleiro do Ébano</h3>
+                        
+                    </div>
+                </div>
+                <!-- Membro 4 -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_anon.png" class="nobre-rito-img mb-3" alt="Tesoureira">
+                        <h3 class="nobre-rito-title">Cavaleiro Anon</h3>
+                        
+                    </div>
+                </div>
+                <!-- Membro 4 -->
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="nobre-rito-card h-100 text-center p-3">
+                        <img src="https://sis.demolaybrasil.org.br/ava/imgs/bg_cadencia.png" class="nobre-rito-img mb-3" alt="Tesoureira">
+                        <h3 class="nobre-rito-title">Cavaleiro da Cadência</h3>
+                        
+                    </div>
+                </div>
+                
+                <!-- 
+                    COMO ADICIONAR NOVOS MEMBROS DO NOBRE RITO:
+                    1. Copie este bloco completo
+                    2. Cole após o último item de membro
+                    3. Altere:
+                       - src da imagem
+                       - Nome e título
+                       - Texto alternativo da imagem
+                -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <div class="mb-4">
+                <a href="#" class="text-white me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#" class="text-white me-3"><i class="fab fa-youtube fa-lg"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-whatsapp fa-lg"></i></a>
+            </div>
+            <p class="mb-2">© 2023 Confraria da Cavalaria Cearense. Todos os direitos reservados.</p>
+            <p class="mb-0">Desenvolvido com <i class="fas fa-heart text-danger"></i> para a comunidade equestre</p>
+        </div>
+    </footer>
+
+    <!-- Video Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalTitle">Assistir Vídeo</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="ratio ratio-16x9">
+                        <iframe id="youtubeVideo" src="" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Script para carregar o vídeo correto no modal
+        var videoModal = document.getElementById('videoModal');
+        videoModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var videoId = button.getAttribute('data-video-id');
+            var iframe = document.getElementById('youtubeVideo');
+            iframe.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+        });
+        
+        // Limpar o src do iframe quando o modal é fechado
+        videoModal.addEventListener('hidden.bs.modal', function () {
+            var iframe = document.getElementById('youtubeVideo');
+            iframe.src = "";
+        });
+    </script>
+</body>
+</html>
