@@ -1,0 +1,1010 @@
+<!doctype html>
+
+<html lang="pt-br" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Potência Maçônica — Painel de Administração</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { overflow-x: hidden; }
+    .sidebar { width: 280px; }
+    .content { margin-left: 280px; min-height: 100vh; }
+    @media (max-width: 991.98px) { .content { margin-left: 0; } }
+    .card-counter { border-radius: 1rem; }
+    .table thead th { white-space: nowrap; }
+    .pointer { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <nav id="sidebar" class="sidebar d-lg-flex d-none flex-column position-fixed top-0 start-0 border-end bg-body" style="height:100vh;">
+    <div class="d-flex align-items-center gap-2 p-3 border-bottom">
+      <i class="bi bi-compass fs-3 text-primary"></i>
+      <div>
+        <div class="fw-bold">Potência Maçônica</div>
+        <small class="text-secondary">Painel Administrativo</small>
+      </div>
+    </div><div class="p-3">
+  <div class="input-group">
+    <span class="input-group-text"><i class="bi bi-search"></i></span>
+    <input type="search" class="form-control" placeholder="Buscar..." aria-label="Buscar">
+  </div>
+</div>
+
+<ul class="nav nav-pills flex-column mb-auto px-2" role="tablist">
+  <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-dashboard" role="tab"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-lojas" role="tab"><i class="bi bi-shop-window me-2"></i>Lojas</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-graus" role="tab"><i class="bi bi-layers me-2"></i>Aprovação de Graus</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-tickets" role="tab"><i class="bi bi-life-preserver me-2"></i>Tickets</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-relatorios" role="tab"><i class="bi bi-graph-up me-2"></i>Relatórios</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-permissoes" role="tab"><i class="bi bi-shield-lock me-2"></i>Permissões</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-auditoria" role="tab"><i class="bi bi-journal-text me-2"></i>Auditoria</a></li>
+  <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-config" role="tab"><i class="bi bi-gear me-2"></i>Configurações</a></li>
+</ul>
+
+<div class="mt-auto p-3 border-top small text-secondary">
+  <div class="d-flex justify-content-between align-items-center">
+    <span>v1.0</span>
+    <button id="btnToggleTheme" class="btn btn-sm btn-outline-secondary" type="button"><i class="bi bi-moon-stars"></i></button>
+  </div>
+</div>
+
+  </nav>  <!-- Topbar for mobile -->  <nav class="navbar navbar-expand-lg bg-body border-bottom d-lg-none sticky-top">
+    <div class="container-fluid">
+      <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar" aria-label="Abrir menu"><i class="bi bi-list fs-4"></i></button>
+      <a class="navbar-brand fw-semibold" href="#">Potência Maçônica</a>
+      <div class="d-flex align-items-center gap-2">
+        <button id="btnToggleThemeSm" class="btn btn-outline-secondary btn-sm" type="button" aria-label="Alternar tema"><i class="bi bi-moon-stars"></i></button>
+        <div class="dropdown">
+          <button class="btn btn-outline-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle me-1"></i> Grande Oficial
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Perfil</a></li>
+            <li><a class="dropdown-item" href="#">Preferências</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#">Sair</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>  <!-- Offcanvas Sidebar (mobile) -->  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+    <div class="offcanvas-header">
+      <h5 id="offcanvasSidebarLabel" class="offcanvas-title">Potência Maçônica</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action active" data-bs-dismiss="offcanvas" data-bs-toggle="tab" href="#tab-dashboard">Dashboard</a>
+        <a class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas" data-bs-toggle="tab" href="#tab-lojas">Lojas</a>
+        <a class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas" data-bs-toggle="tab" href="#tab-graus">Aprovação de Graus</a>
+        <a class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas" data-bs-toggle="tab" href="#tab-tickets">Tickets</a>
+        <a class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas" data-bs-toggle="tab" href="#tab-relatorios">Relatórios</a>
+        <a class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas" data-bs-toggle="tab" href="#tab-permissoes">Permissões</a>
+        <a class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas" data-bs-toggle="tab" href="#tab-auditoria">Auditoria</a>
+        <a class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas" data-bs-toggle="tab" href="#tab-config">Configurações</a>
+      </div>
+    </div>
+  </div>  <!-- Main Content -->  <main class="content">
+    <header class="d-none d-lg-flex align-items-center justify-content-between p-3 border-bottom sticky-top bg-body">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-compass text-primary fs-4"></i>
+        <span class="fw-semibold">Painel da Potência</span>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <div class="input-group w-50">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="search" class="form-control" placeholder="Buscar em todo o sistema...">
+        </div>
+        <button class="btn btn-outline-secondary" id="btnNotifications" type="button" aria-label="Notificações"><i class="bi bi-bell"></i><span class="badge text-bg-danger ms-1">3</span></button>
+        <div class="dropdown">
+          <button class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle me-1"></i> Grande Oficial
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Perfil</a></li>
+            <li><a class="dropdown-item" href="#">Preferências</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#">Sair</a></li>
+          </ul>
+        </div>
+      </div>
+    </header><div class="tab-content p-3 p-lg-4">
+  <!-- Dashboard -->
+  <section id="tab-dashboard" class="tab-pane fade show active" role="tabpanel">
+    <div class="row g-3">
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="card card-counter border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-secondary small">Lojas ativas</div>
+                <div class="fs-3 fw-bold">128</div>
+              </div>
+              <i class="bi bi-shop-window fs-1 text-primary"></i>
+            </div>
+            <div class="progress mt-3" role="progressbar" aria-label="Crescimento" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar" style="width:72%">+72%/ano</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="card card-counter border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-secondary small">Pedidos de grau pendentes</div>
+                <div class="fs-3 fw-bold">15</div>
+              </div>
+              <i class="bi bi-layers fs-1 text-warning"></i>
+            </div>
+            <div class="mt-3 small text-secondary">Última atualização: há 10 min</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="card card-counter border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-secondary small">Tickets em escalonamento</div>
+                <div class="fs-3 fw-bold">7</div>
+              </div>
+              <i class="bi bi-life-preserver fs-1 text-danger"></i>
+            </div>
+            <div class="mt-3 small text-secondary">Tempo médio de resolução: 2d 6h</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-xl-3">
+        <div class="card card-counter border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-secondary small">Inadimplência média</div>
+                <div class="fs-3 fw-bold">9,4%</div>
+              </div>
+              <i class="bi bi-cash-coin fs-1 text-success"></i>
+            </div>
+            <div class="mt-3 small text-secondary">Meta: abaixo de 8%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mt-1">
+      <div class="col-12 col-xl-8">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-body d-flex justify-content-between align-items-center">
+            <span class="fw-semibold"><i class="bi bi-clock-history me-2"></i>Últimas atividades</span>
+            <button class="btn btn-sm btn-outline-secondary">Ver tudo</button>
+          </div>
+          <div class="card-body p-0">
+            <div class="list-group list-group-flush">
+              <div class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="me-auto">
+                  <div class="fw-semibold">Loja Luz do Oriente solicitou aprovação de Exaltação para João A.</div>
+                  <small class="text-secondary">Há 12 minutos</small>
+                </div>
+                <span class="badge text-bg-warning">Grau</span>
+              </div>
+              <div class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="me-auto">
+                  <div class="fw-semibold">Ticket #4821 escalado pela Loja Fraternidade 33</div>
+                  <small class="text-secondary">Há 1 hora</small>
+                </div>
+                <span class="badge text-bg-danger">Ticket</span>
+              </div>
+              <div class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="me-auto">
+                  <div class="fw-semibold">Cadastro de nova loja aprovado: Estrela do Norte</div>
+                  <small class="text-secondary">Ontem, 18:22</small>
+                </div>
+                <span class="badge text-bg-success">Lojas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-xl-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-body d-flex justify-content-between align-items-center">
+            <span class="fw-semibold"><i class="bi bi-flag me-2"></i>Alertas</span>
+            <div class="btn-group btn-group-sm" role="group" aria-label="Filtros de alertas">
+              <button class="btn btn-outline-secondary active">Todos</button>
+              <button class="btn btn-outline-secondary">Lojas</button>
+              <button class="btn btn-outline-secondary">Financeiro</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-3 mb-3">
+              <i class="bi bi-exclamation-triangle fs-4 text-warning"></i>
+              <div class="small"><span class="fw-semibold">5 lojas</span> com inadimplência acima de 20%.</div>
+            </div>
+            <div class="d-flex align-items-start gap-3 mb-3">
+              <i class="bi bi-info-circle fs-4 text-primary"></i>
+              <div class="small">Nova versão do regulamento disponível para assinatura digital.</div>
+            </div>
+            <div class="d-flex align-items-start gap-3">
+              <i class="bi bi-shield-lock fs-4 text-success"></i>
+              <div class="small">Auditoria: todas as trilhas de logs estão ativas.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lojas -->
+  <section id="tab-lojas" class="tab-pane fade" role="tabpanel" aria-labelledby="nav-lojas">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="m-0"><i class="bi bi-shop-window me-2"></i>Gerenciamento de Lojas</h5>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalImportarLojas"><i class="bi bi-upload me-1"></i>Importar</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaLoja"><i class="bi bi-plus-lg me-1"></i>Nova Loja</button>
+      </div>
+    </div>
+
+    <div class="row g-3 align-items-end mb-3">
+      <div class="col-12 col-md-4">
+        <label class="form-label">Buscar</label>
+        <input type="text" class="form-control" placeholder="Nome, número, cidade...">
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label">Oriente</label>
+        <select class="form-select">
+          <option value>Todos</option>
+          <option>Fortaleza/CE</option>
+          <option>Natal/RN</option>
+          <option>Recife/PE</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label">Status</label>
+        <select class="form-select">
+          <option value>Todos</option>
+          <option>Ativa</option>
+          <option>Suspensa</option>
+          <option>Em Regularização</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-2 d-grid">
+        <button class="btn btn-outline-primary"><i class="bi bi-funnel me-1"></i>Filtrar</button>
+      </div>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Loja</th>
+            <th>Oriente</th>
+            <th>Venerável</th>
+            <th>Situação</th>
+            <th>Membros</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>001</td>
+            <td>Augusta e Respeitável Loja Luz do Oriente</td>
+            <td>Fortaleza/CE</td>
+            <td>Marcelo P.</td>
+            <td><span class="badge text-bg-success">Ativa</span></td>
+            <td>58</td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalDetalheLoja"><i class="bi bi-eye"></i></button>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEditarLoja"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>147</td>
+            <td>Fraternidade 33</td>
+            <td>Natal/RN</td>
+            <td>Rafael M.</td>
+            <td><span class="badge text-bg-warning">Em Regularização</span></td>
+            <td>41</td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalDetalheLoja"><i class="bi bi-eye"></i></button>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalEditarLoja"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-outline-success"><i class="bi bi-check2-circle"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Aprovação de Graus -->
+  <section id="tab-graus" class="tab-pane fade" role="tabpanel">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="m-0"><i class="bi bi-layers me-2"></i>Pedidos de Aprovação de Graus</h5>
+      <div class="btn-group">
+        <button class="btn btn-outline-secondary"><i class="bi bi-arrow-repeat me-1"></i>Atualizar</button>
+        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalRegrasValidacao"><i class="bi bi-sliders me-1"></i>Regras</button>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-md-4">
+        <label class="form-label">Loja</label>
+        <select class="form-select">
+          <option>Qualquer</option>
+          <option>Luz do Oriente</option>
+          <option>Fraternidade 33</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-4">
+        <label class="form-label">Período</label>
+        <input type="month" class="form-control">
+      </div>
+      <div class="col-6 col-md-4">
+        <label class="form-label">Status</label>
+        <select class="form-select">
+          <option>Pendentes</option>
+          <option>Aprovados</option>
+          <option>Reprovados</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Irmão</th>
+            <th>Grau</th>
+            <th>Data</th>
+            <th>Loja</th>
+            <th>Comprovante</th>
+            <th>Status</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2025-0015</td>
+            <td>João Andrade</td>
+            <td>Companheiro</td>
+            <td>12/08/2025</td>
+            <td>Luz do Oriente</td>
+            <td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-paperclip"></i></button></td>
+            <td><span class="badge text-bg-warning">Pendente</span></td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalAprovarGrau"><i class="bi bi-check2"></i></button>
+                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalReprovarGrau"><i class="bi bi-x"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoIrmao"><i class="bi bi-clock-history"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>2025-0016</td>
+            <td>Carlos Pinto</td>
+            <td>Mestre</td>
+            <td>10/08/2025</td>
+            <td>Fraternidade 33</td>
+            <td><button class="btn btn-sm btn-outline-secondary"><i class="bi bi-paperclip"></i></button></td>
+            <td><span class="badge text-bg-warning">Pendente</span></td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalAprovarGrau"><i class="bi bi-check2"></i></button>
+                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalReprovarGrau"><i class="bi bi-x"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalHistoricoIrmao"><i class="bi bi-clock-history"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Tickets -->
+  <section id="tab-tickets" class="tab-pane fade" role="tabpanel">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="m-0"><i class="bi bi-life-preserver me-2"></i>Tickets Escalados</h5>
+      <div class="btn-group">
+        <button class="btn btn-outline-secondary"><i class="bi bi-arrow-repeat me-1"></i>Atualizar</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovoTicket"><i class="bi bi-plus-lg me-1"></i>Novo Ticket</button>
+      </div>
+    </div>
+
+    <div class="row g-3 align-items-end mb-3">
+      <div class="col-12 col-md-4">
+        <label class="form-label">Categoria</label>
+        <select class="form-select">
+          <option>Todos</option>
+          <option>Financeiro</option>
+          <option>Ritualístico</option>
+          <option>Cadastro</option>
+          <option>Técnico</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-4">
+        <label class="form-label">Status</label>
+        <select class="form-select">
+          <option>Aberto</option>
+          <option>Em andamento</option>
+          <option>Escalado</option>
+          <option>Resolvido</option>
+          <option>Arquivado</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-4">
+        <label class="form-label">Prioridade</label>
+        <select class="form-select">
+          <option>Qualquer</option>
+          <option>Baixa</option>
+          <option>Média</option>
+          <option>Alta</option>
+          <option>Crítica</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Título</th>
+            <th>Loja</th>
+            <th>Categoria</th>
+            <th>Prioridade</th>
+            <th>Status</th>
+            <th>Atualizado</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>4821</td>
+            <td>Erro ao validar pagamento</td>
+            <td>Fraternidade 33</td>
+            <td>Financeiro</td>
+            <td><span class="badge text-bg-danger">Alta</span></td>
+            <td><span class="badge text-bg-warning">Escalado</span></td>
+            <td>há 1h</td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalVerTicket"><i class="bi bi-eye"></i></button>
+                <button class="btn btn-sm btn-outline-success"><i class="bi bi-check2-circle"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>4837</td>
+            <td>Atualização de regulamento</td>
+            <td>Luz do Oriente</td>
+            <td>Ritualístico</td>
+            <td><span class="badge text-bg-secondary">Média</span></td>
+            <td><span class="badge text-bg-info">Em andamento</span></td>
+            <td>há 3h</td>
+            <td class="text-end">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalVerTicket"><i class="bi bi-eye"></i></button>
+                <button class="btn btn-sm btn-outline-success"><i class="bi bi-check2-circle"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Relatórios -->
+  <section id="tab-relatorios" class="tab-pane fade" role="tabpanel">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="m-0"><i class="bi bi-graph-up me-2"></i>Relatórios</h5>
+      <button class="btn btn-outline-secondary"><i class="bi bi-cloud-arrow-down me-1"></i>Exportar CSV</button>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-12 col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-header bg-body fw-semibold">Relatório por Loja</div>
+          <div class="card-body">
+            <div class="mb-2">
+              <label class="form-label">Loja</label>
+              <select class="form-select">
+                <option>Selecione...</option>
+                <option>Luz do Oriente</option>
+                <option>Fraternidade 33</option>
+              </select>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Período</label>
+              <input type="month" class="form-control">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Tipo</label>
+              <select class="form-select">
+                <option>Graus</option>
+                <option>Financeiro</option>
+                <option>Presenças</option>
+                <option>Tickets</option>
+              </select>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary"><i class="bi bi-filetype-pdf me-1"></i>Gerar PDF</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-header bg-body fw-semibold">Resumo</div>
+          <div class="card-body">
+            <div class="row text-center">
+              <div class="col-6 col-md-3 mb-3">
+                <div class="small text-secondary">Graus aprovados</div>
+                <div class="display-6">23</div>
+              </div>
+              <div class="col-6 col-md-3 mb-3">
+                <div class="small text-secondary">Tickets resolvidos</div>
+                <div class="display-6">58</div>
+              </div>
+              <div class="col-6 col-md-3 mb-3">
+                <div class="small text-secondary">Novas lojas</div>
+                <div class="display-6">3</div>
+              </div>
+              <div class="col-6 col-md-3 mb-3">
+                <div class="small text-secondary">Média de atraso</div>
+                <div class="display-6">1.4d</div>
+              </div>
+            </div>
+            <div class="alert alert-info mt-3" role="alert">
+              <i class="bi bi-info-circle me-2"></i>Integre este painel a uma API para exibir dados reais.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Permissões -->
+  <section id="tab-permissoes" class="tab-pane fade" role="tabpanel">
+    <h5 class="mb-3"><i class="bi bi-shield-lock me-2"></i>Permissões e Papéis</h5>
+    <div class="row g-3">
+      <div class="col-12 col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-header bg-body">Papéis</div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center">Grande Oficial <span class="badge text-bg-primary">Admin</span></li>
+              <li class="list-group-item">Venerável Mestre</li>
+              <li class="list-group-item">Secretaria de Loja</li>
+              <li class="list-group-item">Usuário Comum</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-header bg-body">Permissões do Papel Selecionado</div>
+          <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-2 g-2">
+              <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="perm1"><label class="form-check-label" for="perm1">Gerenciar Lojas</label></div></div>
+              <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="perm2"><label class="form-check-label" for="perm2">Aprovar Graus</label></div></div>
+              <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="perm3"><label class="form-check-label" for="perm3">Acessar Relatórios</label></div></div>
+              <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" id="perm4"><label class="form-check-label" for="perm4">Gerir Financeiro Global</label></div></div>
+              <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" checked id="perm5"><label class="form-check-label" for="perm5">Gerir Tickets Escalados</label></div></div>
+              <div class="col"><div class="form-check"><input class="form-check-input" type="checkbox" id="perm6"><label class="form-check-label" for="perm6">Exportar Dados</label></div></div>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+              <button class="btn btn-primary">Salvar Permissões</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Auditoria -->
+  <section id="tab-auditoria" class="tab-pane fade" role="tabpanel">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="m-0"><i class="bi bi-journal-text me-2"></i>Trilhas de Auditoria</h5>
+      <button class="btn btn-outline-secondary"><i class="bi bi-cloud-arrow-down me-1"></i>Exportar</button>
+    </div>
+    <div class="table-responsive shadow-sm rounded">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Data/Hora</th>
+            <th>Usuário</th>
+            <th>Ação</th>
+            <th>Entidade</th>
+            <th>Detalhes</th>
+            <th>IP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>17/08/2025 09:12</td>
+            <td>GrandeOficial01</td>
+            <td>APROVAR_GRAU</td>
+            <td>Ir.'. João A.</td>
+            <td>Exaltação — doc#9821</td>
+            <td>200.222.10.1</td>
+          </tr>
+          <tr>
+            <td>16/08/2025 18:22</td>
+            <td>GrandeOficial02</td>
+            <td>CRIAR_LOJA</td>
+            <td>Estrela do Norte</td>
+            <td>nº 347 — Oriente Recife</td>
+            <td>200.222.10.2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Configurações -->
+  <section id="tab-config" class="tab-pane fade" role="tabpanel">
+    <h5 class="mb-3"><i class="bi bi-gear me-2"></i>Configurações da Potência</h5>
+    <div class="row g-3">
+      <div class="col-12 col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-header bg-body">Dados Institucionais</div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">Nome da Potência</label>
+              <input type="text" class="form-control" placeholder="Grande Oriente ...">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">CNPJ</label>
+              <input type="text" class="form-control" placeholder="00.000.000/0001-00">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">E-mail oficial</label>
+              <input type="email" class="form-control" placeholder="contato@potencia.org">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Assinatura digital (chave)</label>
+              <input type="password" class="form-control" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary">Salvar dados</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-header bg-body">Parâmetros do Sistema</div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="cfg2fa" checked>
+                  <label class="form-check-label" for="cfg2fa">Exigir 2FA para perfis administrativos</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="cfgDocs" checked>
+                  <label class="form-check-label" for="cfgDocs">Obrigar upload de comprovante para aprovação de grau</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Política de senhas</label>
+                <select class="form-select">
+                  <option>Padrão (mín. 8, 1 maiúscula, 1 nº)</option>
+                  <option>Reforçada (mín. 12, 2 especiais)</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Retenção de logs (dias)</label>
+                <input type="number" class="form-control" min="30" value="365">
+              </div>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+              <button class="btn btn-primary">Salvar parâmetros</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+  </main>  <!-- Modais Gerais -->  <div class="modal fade" id="modalNovaLoja" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cadastrar Nova Loja</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label">Nome da Loja</label>
+              <input type="text" class="form-control" placeholder="Augusta e Respeitável Loja ..." required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Número</label>
+              <input type="text" class="form-control" placeholder="001" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Oriente (Cidade/UF)</label>
+              <input type="text" class="form-control" placeholder="Fortaleza/CE" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Venerável Mestre</label>
+              <input type="text" class="form-control" placeholder="Nome do VM" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">E-mail da Loja</label>
+              <input type="email" class="form-control" placeholder="contato@loja.org">
+            </div>
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="novaLojaAtiva" checked>
+                <label class="form-check-label" for="novaLojaAtiva">Ativar loja após criação</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalEditarLoja" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Loja</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label">Nome da Loja</label>
+              <input type="text" class="form-control" value="Luz do Oriente">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Número</label>
+              <input type="text" class="form-control" value="001">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Oriente</label>
+              <input type="text" class="form-control" value="Fortaleza/CE">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Venerável Mestre</label>
+              <input type="text" class="form-control" value="Marcelo P.">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Status</label>
+              <select class="form-select">
+                <option selected>Ativa</option>
+                <option>Suspensa</option>
+                <option>Em Regularização</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary">Salvar alterações</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalDetalheLoja" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detalhes da Loja</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Nome:</strong> Luz do Oriente</li>
+            <li class="list-group-item"><strong>Número:</strong> 001</li>
+            <li class="list-group-item"><strong>Oriente:</strong> Fortaleza/CE</li>
+            <li class="list-group-item"><strong>Venerável:</strong> Marcelo P.</li>
+            <li class="list-group-item"><strong>Membros:</strong> 58</li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalRegrasValidacao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Regras de Validação de Graus</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ol class="mb-0">
+            <li>Documento comprobatório obrigatório.</li>
+            <li>Intervalo mínimo entre graus: 12 meses.</li>
+            <li>Regularidade financeira da loja.</li>
+            <li>Confirmação de presença nas sessões exigidas.</li>
+          </ol>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalAprovarGrau" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Aprovar Grau</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Observações (opcional)</label>
+            <textarea class="form-control" rows="4" placeholder="Fundamente a decisão, se necessário..."></textarea>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="checkCert">
+            <label class="form-check-label" for="checkCert">Emitir certificado digital automaticamente</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success">Aprovar</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalReprovarGrau" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Reprovar Grau</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label">Motivo da reprovação</label>
+          <textarea class="form-control" rows="4" placeholder="Descreva o motivo"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger">Reprovar</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalHistoricoIrmao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Histórico do Irmão</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-sm align-middle">
+              <thead>
+                <tr><th>Grau</th><th>Data</th><th>Loja</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Aprendiz</td><td>15/03/2023</td><td>Luz do Oriente</td><td><span class="badge text-bg-success">Aprovado</span></td></tr>
+                <tr><td>Companheiro</td><td>12/08/2025</td><td>Luz do Oriente</td><td><span class="badge text-bg-warning">Pendente</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalVerTicket" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ticket #4821</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2"><strong>Título:</strong> Erro ao validar pagamento</div>
+          <div class="mb-2"><strong>Loja:</strong> Fraternidade 33</div>
+          <div class="mb-2"><strong>Categoria:</strong> Financeiro</div>
+          <div class="mb-3"><strong>Descrição:</strong> Ao processar o PIX, retorna código 502.</div>
+          <label class="form-label">Resposta</label>
+          <textarea class="form-control" rows="4" placeholder="Escreva um parecer..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-success">Marcar como Resolvido</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalNovoTicket" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Abrir Ticket (Potência)</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-8">
+              <label class="form-label">Título</label>
+              <input type="text" class="form-control" placeholder="Descreva o problema">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Prioridade</label>
+              <select class="form-select"><option>Baixa</option><option>Média</option><option>Alta</option><option>Crítica</option></select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Loja</label>
+              <select class="form-select"><option>Selecione...</option><option>Luz do Oriente</option><option>Fraternidade 33</option></select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Categoria</label>
+              <select class="form-select"><option>Financeiro</option><option>Ritualístico</option><option>Cadastro</option><option>Técnico</option></select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Descrição</label>
+              <textarea class="form-control" rows="4" placeholder="Detalhe o ocorrido..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>  <div class="modal fade" id="modalImportarLojas" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Importar Lojas (CSV)</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="small text-secondary">Formato esperado: <code>numero;nome;oriente;veneravel;email;status</code></p>
+          <input type="file" class="form-control" accept=".csv">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary">Processar</button>
+        </div>
+      </div>
+    </div>
+  </div>  <!-- Toasts -->  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080">
+    <div id="toastOk" class="toast align-items-center text-bg-success border-0" role="status" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body"><i class="bi bi-check2-circle me-2"></i>Ação concluída com sucesso.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>  <!-- Scripts -->  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>  <script>
+    // Alternância de tema (claro/escuro)
+    const html = document.documentElement;
+    function toggleTheme(){
+      const isLight = html.getAttribute('data-bs-theme') === 'light';
+      html.setAttribute('data-bs-theme', isLight ? 'dark' : 'light');
+      const toast = new bootstrap.Toast(document.getElementById('toastOk'));
+      document.querySelector('#toastOk .toast-body').innerText = 'Tema ' + (isLight ? 'escuro' : 'claro') + ' ativado.';
+      toast.show();
+    }
+    document.getElementById('btnToggleTheme')?.addEventListener('click', toggleTheme);
+    document.getElementById('btnToggleThemeSm')?.addEventListener('click', toggleTheme);
+  </script></body>
+  </html>
